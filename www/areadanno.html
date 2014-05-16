@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>       
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<style>
+	img[usemap] {
+		border: none;
+		height: auto;
+		max-width: 100%;
+		width: 100%;
+	}
+	
+	.imgmap{
+    position:absolute;
+    z-index:10;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+a.mapcircle{
+    display:block;
+    position:absolute;
+	opacity:0.3;
+}
+
+.mapcircle.graffiato{
+    background-color:blue;
+    opacity:0.3;
+}
+.mapcircle.strappato{
+    background-color:blueviolet;
+    opacity:0.3;
+}
+.mapcircle.staccato{
+    background-color:darkorange;
+    opacity:0.3;
+}
+.mapcircle.ammaccato{
+    background-color:darkgreen;
+    opacity:0.3;
+}
+.mapcircle.rotto{
+    background-color:gold;
+    opacity:0.3;
+}
+.mapcircle.bucato{
+    background-color:hotpink;
+    opacity:0.3;
+}
+.mapcircle.piegato{
+    background-color:lawngreen;
+    opacity:0.3;
+}
+.mapcircle.assente{
+    background-color:red;
+    opacity:0.3;
+}
+.mapcircle.fuoriuso{
+    background-color:gray;
+    opacity:0.3;
+}
+.mapcircle.deformato{
+    background-color:peru;
+    opacity:0.3;
+}
+	</style>
+    
+<script src="js/jquery.rwdImageMaps.min.js"></script>
+<script>
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+function colori() {
+//colora le aree in base al danno
+	var mappedImages =  $("img[usemap]");	  
+    mappedImages.each(function(index,img){
+    var $img = $(img);
+    var $imgmap = $("<div id='danni_div' class='imgmap'></div>");
+    $img.after($imgmap);
+    var imgheight = $img.height();
+    var imgwidth = $img.width();
+    var imgPosition = $img.position();
+    $imgmap.css(
+       {
+       top:imgPosition.top+"px",
+       left:imgPosition.left+"px",
+       height:imgheight+"px",
+       width:imgwidth+"px"
+       });
+        
+    var mapName = $img.attr("usemap").replace("#","");
+    var circles = $("map[name='"+mapName+"'] area[shape='rect']");
+    circles.each(function(index,circle){
+       var $circle = $(circle);
+       var attrs = $circle.attr("coords").split(",");
+       var alt = $circle.attr("alt");
+       var $newa = $("<a class='mapcircle "+alt+"' href='"+$circle.attr("href")+"' alt='"+alt+"'>"+"</a>");
+       $imgmap.append($newa);
+       var size = (attrs[2])+'px'
+       $newa.css(
+            {
+            left:attrs[0]+'px',
+            top:attrs[1]+'px',
+            height:attrs[3]-attrs[1],
+            width:attrs[2]-attrs[0]
+       });	
+  });
+ });	
+}
+
+//rende responsive l'immagine con mappatura e aggiunge a tutti i link il codice dell'UTI
+$(document).ready(function(e) {
+	$('img[usemap]').rwdImageMaps();
+	$("area").each(function() {
+		$(this).attr("href", $(this).attr("href") + '&uti='+ getUrlVars()["uti"]);
+	});
+	document.getElementById("titolo").innerHTML="<center><h1 class=\"ui-title\" role=\"heading\" aria-level=\"1\">UTI "+  getUrlVars()["uti"] +" - Aree danneggiate</h1></center>";
+});
+
+//al resize della finestra rimuove i colori precedenti e li reimposta (il timeout è obbligatorio!)
+$(window).resize(function () {
+   setTimeout('$( ".imgmap" ).remove();', 500);
+   setTimeout(colori, 500);
+});
+</script>
+    
+<script type="text/javascript">
+$("document").ready(function(){
+ var data = {
+      "area": "",
+	  "tipo":""
+    };
+ var areacolore = {
+      0: "graffiato",
+	  1:"strappato",
+	  2:"staccato",
+	  3:"ammaccato",
+	  4:"rotto",
+	  5:"bucato",
+	  6:"piegato",
+	  7:"assente",
+	  8:"fuoriuso",
+	  9:"deformato"
+	};
+ data = $(this).serialize() + "&" + $.param(data);
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "http://interterminal.quadranteservizi.it/danni/app/danniuti.php?visualizzadanni=1&uti="+getUrlVars()["uti"], //Relative or absolute path to response.php file
+     
+      success: function(data) {
+		var dataLength = data.length;
+		for (var i = 0; i < dataLength; i++) {
+			tipo_css=areacolore[data[i]["tipo"]];
+			$('area[title="'+data[i]["area"]+'"]').attr('alt', ''+tipo_css);
+		}
+      }
+    });
+    return false;
+  });
+
+</script>
+  
+<title>Interterminal - Gestione danni</title>
+</head>
+
+<body>
+
+
+<div data-role="header" data-theme="d">
+<div id="titolo">
+<h1>Area del danno</h1>
+</div>
+</div>
+
+<img name="schema" src="schema.jpg" width="640" height="338" border="0" id="schema" usemap="#m_schema" alt="schema" /><map name="m_schema" id="m_schema">
+<area shape="rect" coords="382,285,407,309" href="tipodanno.html?area=6" alt="" title="6"/>
+<area shape="rect" coords="359,309,382,334" href="tipodanno.html?area=0" alt="" title="0"/>
+<area shape="rect" coords="359,287,382,309" href="tipodanno.html?area=5" alt="" title="5"/>
+<area shape="rect" coords="334,312,359,334" href="tipodanno.html?area=9" alt="" title="9"/>
+<area shape="rect" coords="334,287,359,309" href="tipodanno.html?area=4" alt="" title="4"/>
+<area shape="rect" coords="234,293,279,302" href="tipodanno.html?area=duepunti" alt="" title=":"/>
+<area shape="rect" coords="376,41,401,65" href="tipodanno.html?area=3" alt="" title="3"/>
+<area shape="rect" coords="353,41,376,65" href="tipodanno.html?area=2" alt="" title="2"/>
+<area shape="rect" coords="329,41,353,67" href="tipodanno.html?area=1" alt="" title="1"/>
+<area shape="rect" coords="353,16,379,41" href="tipodanno.html?area=7" alt="" title="7"/>
+<area shape="rect" coords="329,16,353,41" href="tipodanno.html?area=8" alt="" title="8"/>
+<area shape="rect" coords="174,312,198,331" href="tipodanno.html?area=piu" alt="" title="+"/>
+<area shape="rect" coords="169,21,192,41" href="tipodanno.html?area=meno" alt="" title="-"/>
+<area shape="rect" coords="601,199,620,237" href="tipodanno.html?area=z" alt="" title="Z"/>
+<area shape="rect" coords="601,111,620,149" href="tipodanno.html?area=y" alt="" title="Y"/>
+<area shape="rect" coords="555,178,582,213" href="tipodanno.html?area=q" alt="" title="Q"/>
+<area shape="rect" coords="555,144,582,177" href="tipodanno.html?area=i" alt="" title="I"/>
+<area shape="rect" coords="482,177,555,213" href="tipodanno.html?area=r" alt="" title="R"/>
+<area shape="rect" coords="482,144,555,177" href="tipodanno.html?area=j" alt="" title="J"/>
+<area shape="rect" coords="390,266,482,285" href="tipodanno.html?area=k" alt="" title="K"/>
+<area shape="rect" coords="390,212,482,266" href="tipodanno.html?area=u" alt="" title="U"/>
+<area shape="rect" coords="390,144,482,212" href="tipodanno.html?area=s" alt="" title="S"/>
+<area shape="rect" coords="390,86,482,144" href="tipodanno.html?area=e" alt="" title="E"/>
+<area shape="rect" coords="390,67,482,86" href="tipodanno.html?area=a" alt="" title="A"/>
+<area shape="rect" coords="299,266,390,285" href="tipodanno.html?area=l" alt="" title="L"/>
+<area shape="rect" coords="299,213,390,265" href="tipodanno.html?area=v" alt="" title="V"/>
+<area shape="rect" coords="301,144,390,212" href="tipodanno.html?area=minore" alt="" title="<"/>
+<area shape="rect" coords="301,86,390,144" href="tipodanno.html?area=f" alt="" title="F"/>
+<area shape="rect" coords="299,67,390,86" href="tipodanno.html?area=b" alt="" title="B"/>
+<area shape="rect" coords="204,266,299,285" href="tipodanno.html?area=m" alt="" title="M"/>
+<area shape="rect" coords="204,212,299,266" href="tipodanno.html?area=w" alt="" title="W"/>
+<area shape="rect" coords="204,144,299,212" href="tipodanno.html?area=maggiore" alt="" title=">"/>
+<area shape="rect" coords="204,86,299,144" href="tipodanno.html?area=g" alt="" title="G"/>
+<area shape="rect" coords="204,67,299,86" href="tipodanno.html?area=c" alt="" title="C"/>
+<area shape="rect" coords="110,266,204,285" href="tipodanno.html?area=n" alt="" title="N"/>
+<area shape="rect" coords="110,212,204,266" href="tipodanno.html?area=x" alt="" title="X"/>
+<area shape="rect" coords="110,144,204,212" href="tipodanno.html?area=uguale" alt="" title="="/>
+<area shape="rect" coords="110,86,204,144" href="tipodanno.html?area=h" alt="" title="H"/>
+<area shape="rect" coords="110,67,204,86" href="tipodanno.html?area=d" alt="" title="D"/>
+<area shape="rect" coords="37,177,110,212" href="tipodanno.html?area=s" alt="" title="S"/>
+<area shape="rect" coords="87,204,88,208" href="javascript:;" alt="" />
+<area shape="rect" coords="110,178,111,179" href="javascript:;" alt="" />
+<area shape="rect" coords="37,144,110,177" href="tipodanno.html?area=o" alt="" title="O"/>
+<area shape="rect" coords="11,177,37,212" href="tipodanno.html?area=t" alt="" title="T"/>
+<area shape="rect" coords="11,144,37,177" href="tipodanno.html?area=p" alt="" title="P"/>
+</map>
+
+<p class="mapcircle graffiato">Graffiato</p>
+<p class="mapcircle strappato">Strappato</p>
+<p class="mapcircle staccato">Staccato</p>
+<p class="mapcircle ammaccato">Ammaccato</p>
+<p class="mapcircle rotto">Rotto</p>
+<p class="mapcircle bucato">Bucato</p>
+<p class="mapcircle piegato">Piegato</p>
+<p class="mapcircle assente">Assente</p>
+<p class="mapcircle fuoriuso">Fuori Uso</p>
+<p class="mapcircle deformato">Deformato</p>
+
+
+</body>
+</html>

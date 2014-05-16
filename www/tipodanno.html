@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>       
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> 
+<!--<link rel="stylesheet"  type="text/css" href="app.css"/>-->
+    
+<title>Interterminal - Gestione danni</title>
+
+
+</head>
+<body>
+
+<style>
+	/* Stack all blocks to start */
+	.click {
+		width: 100%; 
+		float:none; 
+		border:solid;
+		text-align:center;
+		
+	}
+
+	a.fill-div {
+		display: block;
+		height: 100%;
+		width: 100%;
+		text-decoration: none;
+	}
+    /* 1st breakpoint - Float B and C, leave A full width on top */ 
+	@media all and (min-width: 34em){
+
+		.click { 
+		  float:left !important; 
+          width: 31.95% !important;  
+		}
+
+	}
+
+    /* 2nd breakpoint - Float all, 50/25/25 */ 
+	@media all and (min-width: 46em){
+
+        .click { 
+		  float:left !important; 
+          width: 23.95% !important; 
+		}
+	}
+		
+		@media all and (min-width: 58em){
+        .click { 
+		  float:left !important; 
+          width: 18.95% !important; 
+		}
+	}
+
+</style>
+
+
+<div data-role="header" data-theme="d">
+<div id="titolotipo">
+<center><h1 class="ui-title" role="heading" aria-level="1">Tipo danno</h1></center>
+</div>
+</div>
+
+<div class="click" id="1">
+   	<a class="fill-div" href="fotodanno.html?tipo=1">
+		<h4>1) Strappato</h4>
+  	</a>
+</div>
+<div class="click" id="2">
+   	<a class="fill-div" href="fotodanno.html?tipo=2">
+		<h4>2) Staccato</h4>
+  	</a>
+</div>
+<div class="click" id="3">
+   	<a class="fill-div" href="fotodanno.html?tipo=3">
+		<h4>3) Ammaccato</h4>
+  	</a>
+</div>
+<div class="click" id="4">
+   	<a class="fill-div" href="fotodanno.html?tipo=4">
+		<h4>4) Rotto</h4>
+  	</a>
+</div>
+<div class="click" id="5">
+   	<a class="fill-div" href="fotodanno.html?tipo=5">
+		<h4>5) Bucato</h4>
+  	</a>
+</div>
+<div class="click" id="6">
+   	<a class="fill-div" href="fotodanno.html?tipo=6">
+		<h4>6) Piegato</h4>
+  	</a>
+</div>
+<div class="click" id="7">
+   	<a class="fill-div" href="fotodanno.html?tipo=7">
+		<h4>7) Assente</h4>
+  	</a>
+</div>
+<div class="click" id="8">
+   	<a class="fill-div" href="fotodanno.html?tipo=8">
+		<h4>8) Fuori Uso</h4>
+  	</a>
+</div>
+<div class="click" id="9">
+   	<a class="fill-div" href="fotodanno.html?tipo=9">
+		<h4>9) Deformato</h4>
+  	</a>
+</div>
+<div class="click" id="0">
+   	<a class="fill-div" href="fotodanno.html?tipo=0">
+		<h4>0) Graffiato</h4>
+  	</a>
+</div>
+
+
+<script>
+
+	setTimeout(function(){
+	 var data = {
+		  "file": "",
+		  "tipo":""
+		};
+	
+	 data = $(this).serialize() + "&" + $.param(data);
+		$.ajax({
+		  type: "GET",
+		  dataType: "json",
+		  url: "http://interterminal.quadranteservizi.it/danni/app/danniuti.php?visualizzadanniarea=1&uti="+getUrlVars()["uti"]+"&area="+getUrlVars()["area"], //Relative or absolute path to response.php file
+		 
+		  success: function(data) {
+			var dataLength = data.length;
+			for (var i = 0; i < dataLength; i++) {
+				$('#'+data[i]["tipo"]).css("background-image","url('http://interterminal.quadranteservizi.it/danni/immagini/"+data[i]["file"]+"')");
+				$('#'+data[i]["tipo"]).removeClass( "ui-link");
+	$('#'+data[i]["tipo"]).css("color","#FFF");
+			}
+		  }
+		});
+		
+		//sistemo il titolo
+		document.getElementById("titolotipo").innerHTML="<center><h1 class=\"ui-title\" role=\"heading\" aria-level=\"1\">UTI "+  getUrlVars()["uti"] +" - Danni area '"+getUrlVars()["area"] +"'</h1></center>";
+		
+
+		//sistemo i link:
+		$("a.fill-div").each(function() {
+			$(this).attr("href", $(this).attr("href") + '&uti='+ getUrlVars()["uti"]+ '&area='+ getUrlVars()["area"]);
+		});
+		
+		
+		
+		return false;
+	
+	},700);
+
+</script>
+</body>
+</html>
