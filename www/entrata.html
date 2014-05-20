@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+<script src="js/jquery.rwdImageMaps.min.js"></script> 
+<script type="text/javascript" src="js/index.js"></script>  
+<script type="text/javascript">
+ function cercauti(){
+        var uti_pass = document.getElementById("uti").value; 
+				document.getElementById("titolo").innerHTML="<center><h1 class=\"ui-title\" role=\"heading\" aria-level=\"1\">UTI "+  uti_pass +" - Aree danneggiate</h1></center>";
+        
+        window.location = "#area?uti=" + uti_pass;
+        
+        visualizzadanni(uti_pass); 
+			  setTimeout(colori, 50);
+        setTimeout(function(){ 
+          $('img[usemap]').rwdImageMaps();
+        },80); 
+        
+
+ }
+  function tipo(area){
+        var uti_pass = document.getElementById("uti").value;
+        window.location = "#tipo?uti=" + uti_pass+"&area="+area;
+        //$(window).on("resize", function () {
+    			setTimeout(function(){
+    				tipodanno();
+    				return false;
+    			},200);//set timeout
+		    //})//questo è come un onload
+ } 
+ function foto(tipo){
+        var uti_pass = document.getElementById("uti").value;
+        fotodanno();
+        window.location = "#foto?uti=" + uti_pass+"&area="+getUrlVars()["area"]+"&tipo="+tipo;
+ }
+</script>         
+    <style>			img[usemap] { 				border: none; 				height: auto; 				max-width: 100%; 				width: 100%; 			} 				 			.imgmap{ 				position:absolute; 				z-index:10; 				box-sizing:border-box; 				margin:0; 				padding:0; 			} 			 			a.mapcircle{ 				display:block; 				position:absolute; 				opacity:0.3; 			} 			 			.mapcircle.graffiato{ 				background-color:blue; 				opacity:0.3; 			} 			.mapcircle.strappato{ 				background-color:blueviolet; 				opacity:0.3; 			} 			.mapcircle.staccato{ 				background-color:darkorange; 				opacity:0.3; 			} 			.mapcircle.ammaccato{ 				background-color:darkgreen; 				opacity:0.3; 			} 			.mapcircle.rotto{ 				background-color:gold; 				opacity:0.3; 			} 			.mapcircle.bucato{ 				background-color:hotpink; 				opacity:0.3; 			} 			.mapcircle.piegato{ 				background-color:lawngreen; 				opacity:0.3; 			} 			.mapcircle.assente{ 				background-color:red; 				opacity:0.3; 			} 			.mapcircle.fuoriuso{ 				background-color:gray; 				opacity:0.3; 			} 			.mapcircle.deformato{ 				background-color:peru; 				opacity:0.3; 			}         
+    </style>        
+<script>
+			
+		
+			
+			//al resize della finestra rimuove i colori precedenti e li reimposta (il timeout è obbligatorio!)
+			$(window).resize(function () {
+			   setTimeout('$( ".imgmap" ).remove();', 500);
+			   setTimeout(colori, 500);
+			});
+      
+     
+        </script>                     
+
+  </head>
+  <body>
+    <div id="cerca" data-url="Ricerca UTI" data-role="page" data-theme="d">
+      <div data-role="header" data-theme="d" data-position="fixed"><h1>Ricerca UTI</h1>
+      </div>
+      <div data-role="content">
+        <br>
+        <br>
+        <div data-role="fieldcontain">
+          <label for="inp_tw8">
+          </label>
+          <input type="text" name="inp_tw8" id="uti" value="508020178"/>
+        </div>
+        <span id="infouti">
+          <br><strong>Targa UTI:</strong>
+          <br>
+          <br><strong>Destinazione:</strong>
+          <br>
+          <br><strong>Data ingresso:
+            <br>
+            <br></strong>
+        </span>
+        <input type="button" data-icon="check" value="Inserisci informazioni" onclick="javascript:cercauti()"/>
+      </div>
+    </div>
+    <div id="area" data-url="area" data-role="page" data-theme="d">
+      <div data-role="header" data-theme="d" id="titolo"><h1>Area del danno</h1>
+      </div>
+      <div data-role="content">
+        <img name="schema" src="schema.jpg" width="640" height="338" border="0" id="schema" usemap="#m_schema" alt="schema" />        
+        <map name="m_schema" id="m_schema">            
+          <area shape="rect" coords="382,285,407,309" href='javascript:tipo("6")' alt="" title="6"/>            
+          <area shape="rect" coords="359,309,382,334" href='javascript:tipo("0")' alt="" title="0"/>            
+          <area shape="rect" coords="359,287,382,309" href='javascript:tipo("5")' alt="" title="5"/>            
+          <area shape="rect" coords="334,312,359,334" href='javascript:tipo("9")' alt="" title="9"/>            
+          <area shape="rect" coords="334,287,359,309" href='javascript:tipo("4")' alt="" title="4"/>            
+          <area shape="rect" coords="234,293,279,302" href='javascript:tipo("duepunti")' alt="" title=":"/>            
+          <area shape="rect" coords="376,41,401,65" href='javascript:tipo("3")' alt="" title="3"/>            
+          <area shape="rect" coords="353,41,376,65" href='javascript:tipo("2")' alt="" title="2"/>            
+          <area shape="rect" coords="329,41,353,67" href='javascript:tipo("1")' alt="" title="1"/>            
+          <area shape="rect" coords="353,16,379,41" href='javascript:tipo("7")' alt="" title="7"/>            
+          <area shape="rect" coords="329,16,353,41" href='javascript:tipo("8")' alt="" title="8"/>            
+          <area shape="rect" coords="174,312,198,331" href='javascript:tipo("piu")' alt="" title="+"/>            
+          <area shape="rect" coords="169,21,192,41" href='javascript:tipo("meno")' alt="" title="-"/>            
+          <area shape="rect" coords="601,199,620,237" href='javascript:tipo("z")' alt="" title="Z"/>            
+          <area shape="rect" coords="601,111,620,149" href='javascript:tipo("y")' alt="" title="Y"/>            
+          <area shape="rect" coords="555,178,582,213" href='javascript:tipo("q")' alt="" title="Q"/>            
+          <area shape="rect" coords="555,144,582,177" href='javascript:tipo("i")' alt="" title="I"/>            
+          <area shape="rect" coords="482,177,555,213" href='javascript:tipo("r")' alt="" title="R"/>            
+          <area shape="rect" coords="482,144,555,177" href='javascript:tipo("j")' alt="" title="J"/>            
+          <area shape="rect" coords="390,266,482,285" href='javascript:tipo("k")' alt="" title="K"/>            
+          <area shape="rect" coords="390,212,482,266" href='javascript:tipo("u")')' alt="" title="U"/>            
+          <area shape="rect" coords="390,144,482,212" href='javascript:tipo("s")' alt="" title="S"/>            
+          <area shape="rect" coords="390,86,482,144" href='javascript:tipo("e")' alt="" title="E"/>            
+          <area shape="rect" coords="390,67,482,86" href='javascript:tipo("a")' alt="" title="A"/>            
+          <area shape="rect" coords="299,266,390,285" href='javascript:tipo("l")' alt="" title="L"/>            
+          <area shape="rect" coords="299,213,390,265" href='javascript:tipo("v")' alt="" title="V"/>            
+          <area shape="rect" coords="301,144,390,212" href='javascript:tipo("minore")' alt="" title="<"/>            
+          <area shape="rect" coords="301,86,390,144" href='javascript:tipo("f")' alt="" title="F"/>            
+          <area shape="rect" coords="299,67,390,86" href='javascript:tipo("b")' alt="" title="B"/>            
+          <area shape="rect" coords="204,266,299,285" href='javascript:tipo("m")' alt="" title="M"/>            
+          <area shape="rect" coords="204,212,299,266" href='javascript:tipo("w")' alt="" title="W"/>            
+          <area shape="rect" coords="204,144,299,212" href='javascript:tipo("maggiore")' alt="" title=">"/>             
+          <area shape="rect" coords="204,86,299,144" href='javascript:tipo("g")' alt="" title="G"/>            
+          <area shape="rect" coords="204,67,299,86" href='javascript:tipo("c")' alt="" title="C"/>            
+          <area shape="rect" coords="110,266,204,285" href='javascript:tipo("n")' alt="" title="N"/>            
+          <area shape="rect" coords="110,212,204,266" href='javascript:tipo("x")' alt="" title="X"/>            
+          <area shape="rect" coords="110,144,204,212" href='javascript:tipo("uguale")' alt="" title="="/>            
+          <area shape="rect" coords="110,86,204,144" href='javascript:tipo("h")' alt="" title="H"/>            
+          <area shape="rect" coords="110,67,204,86" href='javascript:tipo("d")' alt="" title="D"/>            
+          <area shape="rect" coords="37,177,110,212" href='javascript:tipo("s")' alt="" title="S"/>            
+     <!--     <area shape="rect" coords="87,204,88,208" href="javascript:;")' alt="" />            
+          <area shape="rect" coords="110,178,111,179" href="javascript:;")' alt="" />   -->         
+          <area shape="rect" coords="37,144,110,177" href='javascript:tipo("o")' alt="" title="O"/>            
+          <area shape="rect" coords="11,177,37,212" href='javascript:tipo("t")' alt="" title="T"/>            
+          <area shape="rect" coords="11,144,37,177" href='javascript:tipo("p")' alt="" title="P"/>        
+        </map>
+      </div>
+    </div>
+    <div id="tipo" data-url="tipo" data-role="page" data-theme="d">
+      <div data-role="header" data-theme="d" id="titolotipo"><h1>Tipo di danno</h1>
+      </div>
+      <div data-role="content">                            
+        <div class="click" id="1">            
+          <a class="fill-div" href="javascript:foto(1)">              <h4>1) Strappato</h4>               </a>        
+        </div>        
+        <div class="click" id="2">             
+          <a class="fill-div" href="fotodanno.html?tipo=2">                <h4>2) Staccato</h4>             </a>        
+        </div>        
+        <div class="click" id="3">            
+          <a class="fill-div" href="fotodanno.html?tipo=3">                <h4>3) Ammaccato</h4>            </a>        
+        </div>        
+        <div class="click" id="4">            
+          <a class="fill-div" href="fotodanno.html?tipo=4">                <h4>4) Rotto</h4>            </a>        
+        </div>        
+        <div class="click" id="5">            
+          <a class="fill-div" href="fotodanno.html?tipo=5">                <h4>5) Bucato</h4>            </a>        
+        </div>        
+        <div class="click" id="6">            
+          <a class="fill-div" href="fotodanno.html?tipo=6">                <h4>6) Piegato</h4>            </a>        
+        </div>        
+        <div class="click" id="7">            
+          <a class="fill-div" href="fotodanno.html?tipo=7">                <h4>7) Assente</h4>            </a>        
+        </div>        
+        <div class="click" id="8">            
+          <a class="fill-div" href="fotodanno.html?tipo=8">                <h4>8) Fuori Uso</h4>            </a>        
+        </div>        
+        <div class="click" id="9">            
+          <a class="fill-div" href="fotodanno.html?tipo=9">                <h4>9) Deformato</h4>            </a>        
+        </div>        
+        <div class="click" id="0">            
+          <a class="fill-div" href="fotodanno.html?tipo=0">                <h4>0) Graffiato</h4>            </a>        
+        </div>
+<script>
+        		
+	
+        </script>
+      </div>
+    </div>
+    <div id="foto" data-url="Scatta la foto" data-role="page" data-theme="d">
+      <div data-role="header" data-theme="d"><h1>Scatta la foto</h1>
+      </div>
+      <div data-role="content">
+      <center>
+            <div id="aggiungidanno"><br>Scatta la foto</div>
+            <div id="danni"><br>Caricamento...</div>
+        </center>
+        
+        <script>
+           
+        </script>
+      </div>
+    </div>
+    <div id="Riepilogo" data-url="Riepilogo" data-role="page" data-theme="d">
+      <div data-role="header" data-theme="d"><h1>Riepilogo</h1>
+      </div>
+      <div data-role="content">
+      </div>
+    </div>
+  </body>
+</html>
