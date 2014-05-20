@@ -17,13 +17,14 @@
 
 
  <script type="text/javascript">
-$(document).bind("mobileinit", function()
-{
-    if (navigator.userAgent.indexOf("Android") != -1)
-    {
-        $.mobile.defaultPageTransition = 'none';
-        $.mobile.defaultDialogTransition = 'none';
-    }
+$(document).ready(function() 
+{ 
+
+    $.mobile.defaultPageTransition = "none"
+    $.mobile.defaultDialogTransition = 'none';
+    $.mobile.useFastClick = true; 
+    $.mobile.touchOverflowEnabled = true;
+
 });
  
  
