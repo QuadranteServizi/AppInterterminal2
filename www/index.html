@@ -1,15 +1,72 @@
 <!DOCTYPE html>
-<html>                         
-  <head>                                           
-    <meta charset="utf-8" />                                           
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />                                                                                  
-    <title>Interterminal App                                 
-    </title>      	       
-	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>                                                     	       
-	<script type="text/javascript" src="js/index.js"></script>                                                              
-  </head>                           
-  <body class="corpo" onload="init()">    
-  </body>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css">
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+<link rel="stylesheet" href="jquery.mobile-1.1.0.custom.css?" />
+</head>
+<body>
+
+<div id="Ricerca UTI" data-url="Ricerca UTI" data-role="page" data-theme="d">
+<div data-role="header" data-theme="d" data-position="fixed">
+<h1>Ricerca UTI</h1>
+</div>
+
+<div data-role="content">
+<br><br>Edit this page by modifying in the center panel, or delete the page and start with a fresh one.
+
+<form id="form_tw18" action="http://interterminal.quadranteservizi.it/elencodanni.php" method="POST">
+</form>
+<div data-role="fieldcontain">
+<label for="inp_tw8"></label>
+<input type="text" name="inp_tw8" id="inp_tw8" value="UTI"/>
+</div>
+<span id="infouti"><br><strong>Targa UTI:</strong><br><br><strong>Destinazione:</strong><br><br><strong>Data ingresso:<br><br></strong></span>
+<input type="button" data-icon="check" value="Inserisci informazioni"/>
+
+</div></div>
+
+<div id="Area del danno" data-url="Area del danno" data-role="page" data-theme="d">
+<div data-role="header" data-theme="d">
+<h1>Area del danno</h1>
+</div>
+
+<div data-role="content">
+
+<form id="form_tw15" method="GET">
+</form>
+
+</div></div>
+
+<div id="Tipo di danno" data-url="Tipo di danno" data-role="page" data-theme="d">
+<div data-role="header" data-theme="d">
+<h1>Tipo di danno</h1>
+</div>
+
+<div data-role="content">
+
+</div></div>
+
+<div id="Scatta la foto" data-url="Scatta la foto" data-role="page" data-theme="d">
+<div data-role="header" data-theme="d">
+<h1>Scatta la foto</h1>
+</div>
+
+<div data-role="content">
+
+</div></div>
+
+<div id="Riepilogo" data-url="Riepilogo" data-role="page" data-theme="d">
+<div data-role="header" data-theme="d">
+<h1>Riepilogo</h1>
+</div>
+
+<div data-role="content">
+
+</div></div>
+
+</body>
 </html>
